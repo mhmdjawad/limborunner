@@ -7,21 +7,13 @@ GLOBAL.PROJECT_IMAGES               = GLOBAL.PROJECT_ASSETS + "Images/";
 GLOBAL.FRAMERATE                    = 1/15;    // frames per second
 GLOBAL.CANVAS = {
     CONTAINER : ".canvas_container",
-    WIDTH   : 650, //parseInt(window.innerWidth / 200) * 100,
-    HEIGHT  : 600 //parseInt(window.innerHeight / 100) * 100 
+    WIDTH   : GLOBAL.TILESIZE * 40, //parseInt(window.innerWidth / 200) * 100,
+    HEIGHT  : GLOBAL.TILESIZE * 35  //parseInt(window.innerHeight / 100) * 100 
 }
 GLOBAL.CANVAS_WIDTH = GLOBAL.CANVAS.WIDTH;
 GLOBAL.CANVAS_HEIGHT = GLOBAL.CANVAS.HEIGHT;
 //FONTS
 GLOBAL.CHARS = ' 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ.:-';
-GLOBAL.ENTITY = {
-    "players" : {
-        "name"  : "tanks", 
-        "img"   : 'players.png', 
-        "size"  : 32,
-        "map"   : 'players-map.json',
-    }
-}
 GLOBAL.MAPS = {};
 GLOBAL.SOUNDS = {};
 GLOBAL.IMAGES = {};
@@ -36,6 +28,11 @@ GLOBAL.Assets = {
         'black-font-8.gif',
         'grass.gif',
         'stone.gif',
+        'water.gif',
+        'dirt.gif',
+        'map1.gif',
+        'zombie.gif',
+        'hero1.gif',
     ],
     "json_url" : [],
     "sounds_url" : [],

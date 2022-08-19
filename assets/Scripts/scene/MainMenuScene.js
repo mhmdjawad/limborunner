@@ -16,10 +16,10 @@ export default class MainMenuScene{
 		this._speed = 5;
 		this.arrived = false;
 		this.FontHandler = new PixelFont(16,'#ffffff');
-		this.FontHandlerGreen = new PixelFont(8*4,'grey');
 		this.FontHandlerGreen = new PixelFont(8*4,'green');
 		this.FontHandlerRed = new PixelFont(8*4,'red');
 		this.FontHandlerBlue = new PixelFont(8*4,'#0000ff');
+		this.FontHandlerWhite = new PixelFont(8*4,'#ffffff');
 		let menuXY = {
 			x : GLOBAL.TILESIZE * 5,
 			y : GLOBAL.TILESIZE * 15,
@@ -158,43 +158,50 @@ export default class MainMenuScene{
 			'LIMBO RUNNER',
 			'GAME'
 		],context,2,86,true);
+		this.FontHandlerWhite.printLines([
+			'LIMBO RUNNER',
+			'GAME'
+		],context,3,88,true);
 	}
 	drawIntroGameLogo(context){
 		let L = this.FontHandler.chars['L'];
 		let P01 = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['grass.gif']);
 		let P02 = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['stone.gif']);
-
-
-
-		let image = SpriteMaker.pxielToCanvas( this.FontHandler.chars['L'],{"#ffffff" : [P01,P02]},8,8);
+		
+		let grass = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['grass.gif']);
+		let stone = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['stone.gif']);
+		let dirt = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['dirt.gif']);
+		let water = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['water.gif']);
+		let image;
+		image = SpriteMaker.pxielToCanvas( this.FontHandler.chars['L'],{"#ffffff" : [grass,stone,dirt,water]},8,8);
 		context.drawImage(image,
 			GLOBAL.TILESIZE,
 			GLOBAL.CANVAS_HEIGHT - image.height - GLOBAL.TILESIZE*6,
 			image.width,
 			image.height
 		);
-		image = SpriteMaker.pxielToCanvas( this.FontHandler.chars['I'],{"#ffffff" : [P01,P02]},8,8);
+		image = SpriteMaker.pxielToCanvas( this.FontHandler.chars['I'],{"#ffffff" : [grass,stone,dirt,water]},8,8);
 		context.drawImage(image,
 			image.width,
 			GLOBAL.CANVAS_HEIGHT - image.height - GLOBAL.TILESIZE*6,
 			image.width,
 			image.height
 		);
-		image = SpriteMaker.pxielToCanvas( this.FontHandler.chars['M'],{"#ffffff" : [P01,P02]},8,8);
+		image = SpriteMaker.pxielToCanvas( this.FontHandler.chars['M'],{"#ffffff" : [grass,stone,dirt,water]},8,8);
 		context.drawImage(image,
 			image.width*2,
 			GLOBAL.CANVAS_HEIGHT - image.height - GLOBAL.TILESIZE*6,
 			image.width,
 			image.height
 		);
-		image = SpriteMaker.pxielToCanvas( this.FontHandler.chars['B'],{"#ffffff" : [P01,P02]},8,8);
+		image = SpriteMaker.pxielToCanvas( this.FontHandler.chars['B'],{"#ffffff" : [grass,stone,dirt,water]},8,8);
 		context.drawImage(image,
 			image.width*3,
 			GLOBAL.CANVAS_HEIGHT - image.height - GLOBAL.TILESIZE*6,
 			image.width,
 			image.height
 		);
-		image = SpriteMaker.pxielToCanvas( this.FontHandler.chars['O'],{"#ffffff" : [P01,P02]},8,8);
+		image = SpriteMaker.pxielToCanvas( this.FontHandler.chars['O'],{"#ffffff" : [grass,stone,dirt,water]},8,8);
 		context.drawImage(image,
 			image.width*4,
 			GLOBAL.CANVAS_HEIGHT - image.height - GLOBAL.TILESIZE*6,

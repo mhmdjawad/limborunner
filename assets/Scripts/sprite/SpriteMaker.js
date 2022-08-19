@@ -138,7 +138,7 @@ export default class SpriteMaker{
                 if(transformatedCanvas && transformatedCanvas.length > 1){
                     transformatedCanvas = transformatedCanvas[randInt(0,transformatedCanvas.length)];
                 }
-                if(transformatedCanvas){
+                if(transformatedCanvas && transformatedCanvas != '_'){
                     ctx2.drawImage(transformatedCanvas,ofx, ofy, width, height);
                 }
             }

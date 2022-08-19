@@ -1,8 +1,10 @@
 import KeyboardAndMouse     from '../handler/KeyboardAndMouse.js'
 import Player               from '../entity/player.js';
+import Monster               from '../entity/monster.js';
 import Point from '../module/Point.js';
 import Rectangle from '../module/Rectangle.js';
 import PixelFont from '../handler/PixelFont.js';
+import SpriteMaker from '../sprite/SpriteMaker.js';
 export default class GameScene{
     constructor(sceneManager){
         window.scene = this;
@@ -16,11 +18,54 @@ export default class GameScene{
         this.FontHandler = new PixelFont(16,'#ffffff');
         this.level = 1;
         this.player = Player.makePlayer();
+        this.mobs = [];
+
         this.player.setPosition(new Point(32*2,GLOBAL.CANVAS_HEIGHT-32));
         this.Objects = [this.player];
+
+        let grass = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['grass.gif']);
+		let stone = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['stone.gif']);
+		let dirt = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['dirt.gif']);
+		let water = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['water.gif']);
+        
+        // grass = SpriteMaker.magnify(grass,2);
+        // stone = SpriteMaker.magnify(stone,2);
+        // dirt = SpriteMaker.magnify(dirt,2);
+        // water = SpriteMaker.magnify(water,2);
+
+        let map1 = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['map1.gif']);
+        this.mapoverlay = SpriteMaker.pxielToCanvas( map1,{
+            // "#000000" : "_",
+            "#fbf236" : '_',
+            "#99e550" : grass,
+            "#99e550" : water,
+            "#847e87" : stone,
+            "#8f563b" : [stone,dirt],
+            "#ffffff" : [grass,stone,dirt,water]
+        },map1.width,map1.height);
+    }
+    gameplayField(ctx){
+        ctx.drawImage(this.mapoverlay,
+			0,
+			0,
+			this.mapoverlay.width,
+			this.mapoverlay.height
+		);
     }
     update(time) {
         this.player.update(time);
+        [...this.mobs].forEach(obj=>{
+            if(obj.update) obj.update(time);
+        });
+        this.player.shots.forEach(x => {
+            [...this.mobs].forEach(obj=>{
+                if(x.distanceTo(obj.center) <= 32){
+                    obj.life -= x.life;
+                    x.life = 0;
+                }
+            });
+        });
+        this.mobs = this.mobs.filter(s => s.life > 0);
     }
     newgame(){
         
@@ -30,14 +75,18 @@ export default class GameScene{
 			this.keydown(e.event);
 		}
 		else{
-			console.log(e);		///but we are only listning to click and touch
+			console.log(e);
 		}
 	}
     draw(ctx) {
 		ctx.clearRect(0,0,GLOBAL.CANVAS_WIDTH,GLOBAL.CANVAS_HEIGHT);
 		ctx.fillStyle = "#000";
 		ctx.fillRect(0,0,GLOBAL.CANVAS_WIDTH,GLOBAL.CANVAS_HEIGHT);
-		[...this.Objects].forEach(obj=>{
+        this.gameplayField(ctx);
+        [...this.Objects].forEach(obj=>{
+			if(obj.draw) obj.draw(ctx);
+		});
+        [...this.mobs].forEach(obj=>{
 			if(obj.draw) obj.draw(ctx);
 		});
         // this.FontHandlerW.print("ROCKS " + this.player.shotsCount, ctx, 0, GLOBAL.CANVAS_HEIGHT/2 + 32, false);
@@ -58,6 +107,14 @@ export default class GameScene{
         }
         else if(key == KeyboardAndMouse.key.SPACE){
             this.player.fire();
+        }
+        else if(key == KeyboardAndMouse.key.O){
+            let mob = new Monster(this);
+            let randx = randInt(GLOBAL.TILESIZE * 3 , GLOBAL.CANVAS_WIDTH - GLOBAL.TILESIZE  * 3);
+            let randy = randInt(GLOBAL.TILESIZE * 3 , GLOBAL.CANVAS_HEIGHT - GLOBAL.TILESIZE  * 6);
+            mob.setPosition(new Point(randx,randy));
+            this.mobs.push(mob);
+            console.log("mob added");
         }
 		else if(key == KeyboardAndMouse.key.X || key == KeyboardAndMouse.key.ENTER){
             if(this.sceneManager._main.Timer.isPaused == false){

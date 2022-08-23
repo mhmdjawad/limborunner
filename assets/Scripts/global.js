@@ -8,7 +8,7 @@ GLOBAL.FRAMERATE                    = 1/15;    // frames per second
 GLOBAL.CANVAS = {
     CONTAINER : ".canvas_container",
     WIDTH   : GLOBAL.TILESIZE * 40, //parseInt(window.innerWidth / 200) * 100,
-    HEIGHT  : GLOBAL.TILESIZE * 35  //parseInt(window.innerHeight / 100) * 100 
+    HEIGHT  : GLOBAL.TILESIZE * 34  //parseInt(window.innerHeight / 100) * 100 
 }
 GLOBAL.CANVAS_WIDTH = GLOBAL.CANVAS.WIDTH;
 GLOBAL.CANVAS_HEIGHT = GLOBAL.CANVAS.HEIGHT;
@@ -30,9 +30,10 @@ GLOBAL.Assets = {
         'stone.gif',
         'water.gif',
         'dirt.gif',
-        'map1.gif',
         'zombie.gif',
         'hero1.gif',
+        'map2.gif',
+        'slime.gif',
     ],
     "json_url" : [],
     "sounds_url" : [],

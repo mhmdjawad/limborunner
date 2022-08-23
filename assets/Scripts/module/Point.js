@@ -43,6 +43,9 @@ export default class Point{
         else if(x1 > x2  && y1 > y2) return 7;  //moving up left
         return 0;
     }
+    getDirectionTo(another){
+        return getDirection(this.getAngleTo(another));
+    }
     move(direction,distance){
         if(direction == DIRECTION.UP){
             this.y -= distance;

@@ -9,7 +9,9 @@ export default class Monster extends Rectangle{
         this.level = 1;
         this.shots = [];
         this.center = this.destination = this.latestDestination = new Point(0,0);
-        this.sprite = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['zombie.gif']);
+        let mobtypes = ['zombie.gif','slime.gif'];
+        let image = GLOBAL.Assets.images[mobtypes[randInt(0,mobtypes.length)]];
+        this.sprite = SpriteMaker.imageToCanvas(image);
         this.sprite = SpriteMaker.magnify(this.sprite,2);
         this.sprite = SpriteMaker.transformCanvasColors(this.sprite,{"#ffffff":"_"});
         this.width = this.sprite.width;
@@ -47,9 +49,28 @@ export default class Monster extends Rectangle{
             if(obj.update) obj.update(time);
         });
         this.cooldown++;
-        if(this.cooldown > 100){
+        if(this.cooldown > 5){
+            let playerlocation = this.gamescene.player.center;
+            /*if(this.destination.x > playerlocation.x){
+                this.dir = DIRECTION.RIGHT;
+            }
+            else{
+                this.dir = DIRECTION.LEFT;
+            }
+            
+            if(this.destination.y > playerlocation.y){
+                this.dir = DIRECTION.DOWN;
+            }
+            else{
+                this.dir = DIRECTION.UP;
+            }
+
+            if(rand() > 0.9){
+                this.dir = this.directions[randInt(0,this.directions.length)];
+            }*/
+            this.dir = getDirection(this.destination.getAngleTo(playerlocation));
+            // console.log(`moving ${dir}`);
             this.destination.move(this.dir,this.width);
-            this.dir = this.directions[randInt(0,this.directions.length)];
             this.cooldown = 0;
         }
         

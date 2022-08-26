@@ -1,9 +1,11 @@
 import Point from "../module/Point.js";
 import Rectangle from '../module/Rectangle.js';
 import Rock from './rock.js';
+import Brick from "./brick.js";
 export default class Player extends Rectangle{
-    constructor(){
+    constructor(game){
         super();
+        this.game = game;
         this.life = 100;
         this.level = 1;
         this.center = this.destination = this.latestDestination = new Point(0,0);
@@ -25,7 +27,6 @@ export default class Player extends Rectangle{
         this.center = this.destination = this.latestDestination = point;
     }
     draw(ctx){
-        //super.draw(ctx);
         ctx.drawImage(this.playersprite,
             this.center.x - this.width/2, 
             this.center.y - this.height/2,
@@ -35,6 +36,14 @@ export default class Player extends Rectangle{
         [...this.shots].forEach(obj=>{
             if(obj.draw) obj.draw(ctx);
         });
+        let to = this.center.clone();
+        to.move(this.dir,this.width);
+        ctx.fillStyle = "#4b58b57a";
+        ctx.fillRect(
+            to.x - this.width/2, 
+            to.y - this.height/2,
+            this.width,
+            this.height);
     }
     update(time){
         this.shots = this.shots.filter(s => 
@@ -51,27 +60,35 @@ export default class Player extends Rectangle{
         new Rock(this);
     }
     moveleft(){
-        this.destination.move(DIRECTION.LEFT,this.width);
+        if(this.dir == DIRECTION.LEFT){
+            this.destination.move(DIRECTION.LEFT,this.width);
+            this.collisionNormalizer();
+        }
         this.dir = DIRECTION.LEFT;
-        this.collisionNormalizer();
     }
     moveright(){
-        this.destination.move(DIRECTION.RIGHT,this.width);
+        if(this.dir == DIRECTION.RIGHT){
+            this.destination.move(DIRECTION.RIGHT,this.width);
+            this.collisionNormalizer();
+        }
         this.dir = DIRECTION.RIGHT;
-        this.collisionNormalizer();
     }
     moveup(){
+        if(this.dir == DIRECTION.UP){
+            this.destination.move(DIRECTION.UP,this.width);
+            this.collisionNormalizer();
+        }
         this.dir = DIRECTION.UP;
-        this.destination.move(DIRECTION.UP,this.width);
-        this.collisionNormalizer();
     }
     movedown(){
+        if(this.dir == DIRECTION.DOWN){
+            this.destination.move(DIRECTION.DOWN,this.width);
+            this.collisionNormalizer();
+        }
         this.dir = DIRECTION.DOWN;
-        this.destination.move(DIRECTION.DOWN,this.width);
-        this.collisionNormalizer();
     }
     collisionNormalizer(){
-        if(this.destination.y >= GLOBAL.CANVAS_HEIGHT - this.width){
+        /*if(this.destination.y >= GLOBAL.CANVAS_HEIGHT - this.width){
             this.destination.y = GLOBAL.CANVAS_HEIGHT - this.width;
         }
         if(this.destination.y >= GLOBAL.CANVAS_HEIGHT - this.width){
@@ -94,6 +111,11 @@ export default class Player extends Rectangle{
         }
         if(this.destination.x >= GLOBAL.CANVAS_WIDTH - this.width){
             this.destination.x = GLOBAL.CANVAS_WIDTH - this.width;
-        }
+        }*/
+    }
+    placewall(){
+        let to = this.center.clone();
+        to.move(this.dir,this.width);
+        this.game.Objects.push(new Brick(this.game,to));
     }
 }

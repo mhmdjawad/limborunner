@@ -1,9 +1,7 @@
 let GLOBAL = {};
 GLOBAL.ASPECT_MULTIPLIER            = 1;//default multiplier to resize stuff in canvas
 GLOBAL.TILESIZE = 16 * GLOBAL.ASPECT_MULTIPLIER;
-GLOBAL.BASE_DIR                     = "";
-GLOBAL.PROJECT_ASSETS               = GLOBAL.BASE_DIR + "assets/";
-GLOBAL.PROJECT_IMAGES               = GLOBAL.PROJECT_ASSETS + "Images/";
+GLOBAL.PROJECT_IMAGES               = "assets/Images/";
 GLOBAL.FRAMERATE                    = 1/15;    // frames per second
 GLOBAL.CANVAS = {
     CONTAINER : ".canvas_container",
@@ -22,18 +20,15 @@ GLOBAL.Assets = {
     "loaded" : 0,
     "images_url" : [
         'player1.gif',
-        '001.gif',
-        '002.gif',
-        '003.gif',
         'black-font-8.gif',
         'grass.gif',
         'stone.gif',
         'water.gif',
         'dirt.gif',
         'zombie.gif',
-        'hero1.gif',
-        'map2.gif',
         'slime.gif',
+        'hero1.gif',
+        'bricks.gif',
     ],
     "json_url" : [],
     "sounds_url" : [],

@@ -26,13 +26,12 @@ class Game extends GameBase{
         let framesCount = this.framesPassedTillNow.toString().padStart(8,'0');
         let tx = this.canvas.width - this.timeHMS.length * 8 - 4;
         let fx = this.canvas.width - framesCount.length * 8 - 4;
-        if(this.fontHandler){
-            this.fontHandler.print(this.timeHMS,   this.ctx,tx,4);
-            this.fontHandler.print(framesCount,    this.ctx,fx,20);
-        }
+        this.ctx.fillText(this.timeHMS,tx,4);
+        this.ctx.fillText(framesCount,fx,20);
     }
 }
 document.addEventListener('DOMContentLoaded', function () {
+    if(window.game) return;
     window.game = new Game();
     setTimeout(() => {
         window.game.start();

@@ -18,8 +18,8 @@ export default class KeyboardAndMouse{
                         name    : eventName,
                         event   : event
                     });
-                    event.preventDefault();
-                    event.stopPropagation();
+                    // event.preventDefault();
+                    // event.stopPropagation();
                 }
                 else if(KeyboardAndMouse.Event.KEY.includes(eventName)){
                     this.events.push({ 

@@ -1,10 +1,12 @@
 import KeyboardAndMouse     from '../handler/KeyboardAndMouse.js'
 import Player               from '../entity/player.js';
-import Monster               from '../entity/monster.js';
-import Point from '../module/Point.js';
+import Monster              from '../entity/monster.js';
+import Point                from '../module/Point.js';
+import PixelFont            from '../handler/PixelFont.js';
+import SpriteMaker          from '../sprite/SpriteMaker.js';
+import Brick                from '../entity/brick.js';
 import Rectangle from '../module/Rectangle.js';
-import PixelFont from '../handler/PixelFont.js';
-import SpriteMaker from '../sprite/SpriteMaker.js';
+
 export default class GameScene{
     constructor(sceneManager){
         window.scene = this;
@@ -17,22 +19,22 @@ export default class GameScene{
 		]);
         this.FontHandler = new PixelFont(16,'#ffffff');
         this.level = 1;
-        this.player = Player.makePlayer();
+        this.player = new Player(this);
         this.mobs = [];
+        this.player.setPosition(new Point(16,GLOBAL.CANVAS_HEIGHT-16));
+        this.Objects = [];
+        this.map = this.makeMapBg();
+        for(let i = 0 ; i < 10 ; i++){
+            this.Objects.push(new Brick(this));
+        }
+    }
 
-        this.player.setPosition(new Point(32,GLOBAL.CANVAS_HEIGHT-16));
-        this.Objects = [this.player];
+    makeMapBg(){
+
         let grass = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['grass.gif']);
-		let stone = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['stone.gif']);
-		let dirt = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['dirt.gif']);
-		let water = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['water.gif']);
-        
-        grass = SpriteMaker.magnify(grass,3);
-        stone = SpriteMaker.magnify(stone,3);
-        dirt = SpriteMaker.magnify(dirt,3);
-        water = SpriteMaker.magnify(water,3);
-        
-        //let map1 = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['map2.gif']);
+        let dirt = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['dirt.gif']);
+        grass = SpriteMaker.magnify(grass,4);
+        dirt = SpriteMaker.magnify(dirt,4);
         let map1 = document.createElement('canvas');
         map1.length = map1.width = 40;
         let map1c = map1.getContext('2d');
@@ -48,7 +50,7 @@ export default class GameScene{
             // "#000" : [grass,stone,dirt,water]
             "#000" : [grass,dirt]
         },grass.width,grass.height);
-
+        return map1;
     }
     gameplayField(ctx){
         ctx.globalAlpha = 0.3;
@@ -86,7 +88,7 @@ export default class GameScene{
 			this.keydown(e.event);
 		}
 		else{
-			console.log(e);
+			//console.log(e);
 		}
 	}
     draw(ctx) {
@@ -100,6 +102,7 @@ export default class GameScene{
         [...this.mobs].forEach(obj=>{
 			if(obj.draw) obj.draw(ctx);
 		});
+        this.player.draw(ctx);
         // this.FontHandlerW.print("ROCKS " + this.player.shotsCount, ctx, 0, GLOBAL.CANVAS_HEIGHT/2 + 32, false);
 	}
     addMob(){
@@ -128,6 +131,9 @@ export default class GameScene{
         }
         else if(key == KeyboardAndMouse.key.O){
             this.addMob();
+        }
+        else if(key == KeyboardAndMouse.key.B){
+            this.player.placewall();
         }
         else if(key == KeyboardAndMouse.key.ESCAPE){
             this.sceneManager.toMainMenuScene();

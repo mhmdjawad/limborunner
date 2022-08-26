@@ -2,6 +2,7 @@ import KeyboardAndMouse     from '../handler/KeyboardAndMouse.js'
 import MenuItem             from '../module/MenuItem.js';
 import PixelFont 			from '../handler/PixelFont.js';
 import SpriteMaker 			from '../sprite/SpriteMaker.js';
+import {Paint} 				from '../lib/Helpers.js';
 export default class MainMenuScene{
 	constructor(sceneManager){
 		window.scene = this;
@@ -73,7 +74,7 @@ export default class MainMenuScene{
 			this.keydown(e.event);
 		}
 		else{
-			console.log(e);
+			//console.log(e);
 		}
         this.y = 0;
         this.buffer = this.getBuffer();
@@ -141,6 +142,7 @@ export default class MainMenuScene{
 		ctx.fillRect(0,0,GLOBAL.CANVAS_WIDTH,GLOBAL.CANVAS_HEIGHT);
 		let buffer = this.buffer;
 		ctx.drawImage(buffer,0,this.y,buffer.width,buffer.height);
+		this.drawGridAndBoard(ctx);
 		[...this.Objects].forEach(obj=>{
 			if(obj.draw) obj.draw(ctx);
 		});
@@ -218,4 +220,27 @@ export default class MainMenuScene{
         this.FontHandler.print(text, context, 0, 0, false);
         return buffer;
     }
+	drawGridAndBoard(context){
+		let grass = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['dirt.gif']);
+        let dirt = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['grass.gif']);
+		grass = SpriteMaker.magnify(grass,4);
+        dirt = SpriteMaker.magnify(dirt,4);
+		let sprite = grass;
+		context.globalAlpha = 0.3;
+		for(let i = 0 ; i < 20 ;i++){
+			for(let j = 0 ; j < 20 ; j++){
+				if(((i % 2 ==0 || j %2 == 0) && !(i % 2 == 0 && j %2 == 0) )){
+                    sprite = grass;
+                }
+                else{
+                    sprite = dirt;
+                }
+				context.drawImage(sprite,
+					i * sprite.width,
+					j * sprite.height
+				);
+			}
+		}
+		context.globalAlpha = 1;
+	}
 }

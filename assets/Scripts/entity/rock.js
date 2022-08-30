@@ -12,6 +12,6 @@ export default class Rock extends Point{
         super.drawCircle(ctx,4,"red");
     }
     update(time){
-        super.move( this.dir ,this.speed + 10);
+        super.move( this.dir , this.speed + 10);
     }
 }

@@ -11,17 +11,16 @@ export default class Player extends Rectangle{
         this.center = this.destination = this.latestDestination = new Point(0,0);
         this.shots = [];
         this.fill = "white";
-        this.playersprite = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['hero1.gif']);
-        this.playersprite = SpriteMaker.magnify(this.playersprite,2);
-        this.playersprite = SpriteMaker.transformCanvasColors(this.playersprite,{"#ffffff":"_"});
+        this.playersprite = this.getSprite();
         this.width = this.playersprite.width;
         this.height = this.playersprite.height;
         this.dir = DIRECTION.UP;
     }
-    static makePlayer(type){
-        switch(type){
-            default: return new Player;
-        }
+    static getSprite(){
+        let sprite = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['hero1.gif']);
+        sprite = SpriteMaker.magnify(sprite,2);
+        sprite = SpriteMaker.transformCanvasColors(sprite,{"#ffffff":"_"});
+        return sprite;
     }
     setPosition(point){
         this.center = this.destination = this.latestDestination = point;
@@ -54,11 +53,7 @@ export default class Player extends Rectangle{
             if(obj.update) obj.update(time);
         });
     }
-    fire(){
-        this.shotsCount--;
-        if(this.shots.length > 3) return;
-        new Rock(this);
-    }
+    
     moveleft(){
         if(this.dir == DIRECTION.LEFT){
             this.destination.move(DIRECTION.LEFT,this.width);
@@ -112,6 +107,12 @@ export default class Player extends Rectangle{
         if(this.destination.x >= GLOBAL.CANVAS_WIDTH - this.width){
             this.destination.x = GLOBAL.CANVAS_WIDTH - this.width;
         }*/
+    }
+
+    fire(){
+        this.shotsCount--;
+        if(this.shots.length > 3) return;
+        new Rock(this);
     }
     placewall(){
         let to = this.center.clone();

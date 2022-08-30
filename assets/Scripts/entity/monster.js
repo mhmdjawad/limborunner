@@ -51,26 +51,9 @@ export default class Monster extends Rectangle{
         this.cooldown++;
         if(this.cooldown > 5){
             let playerlocation = this.gamescene.player.center;
-            /*if(this.destination.x > playerlocation.x){
-                this.dir = DIRECTION.RIGHT;
-            }
-            else{
-                this.dir = DIRECTION.LEFT;
-            }
-            
-            if(this.destination.y > playerlocation.y){
-                this.dir = DIRECTION.DOWN;
-            }
-            else{
-                this.dir = DIRECTION.UP;
-            }
-
-            if(rand() > 0.9){
-                this.dir = this.directions[randInt(0,this.directions.length)];
-            }*/
             this.dir = getDirection(this.destination.getAngleTo(playerlocation));
             // console.log(`moving ${dir}`);
-            this.destination.move(this.dir,this.width);
+            //this.destination.move(this.dir,this.width);
             this.cooldown = 0;
         }
         

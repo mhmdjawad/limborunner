@@ -1,16 +1,14 @@
 import Point from "../module/Point.js";
-import Rectangle from '../module/Rectangle.js';
+import Mob from '../mob/mob.js';
 import Rock from './rock.js';
 import Brick from "./brick.js";
-export default class Player extends Rectangle{
+export default class Player extends Mob{
     constructor(game){
-        super();
-        this.game = game;
+        super(game);
         this.life = 100;
         this.level = 1;
         this.center = this.destination = this.latestDestination = new Point(0,0);
         this.shots = [];
-        this.fill = "white";
         this.playersprite = this.getSprite();
         this.width = this.playersprite.width;
         this.height = this.playersprite.height;
@@ -28,10 +26,7 @@ export default class Player extends Rectangle{
     draw(ctx){
         ctx.drawImage(this.playersprite,
             this.center.x - this.width/2, 
-            this.center.y - this.height/2,
-            this.width,
-            this.height
-            );
+            this.center.y - this.height/2);
         [...this.shots].forEach(obj=>{
             if(obj.draw) obj.draw(ctx);
         });
@@ -53,62 +48,25 @@ export default class Player extends Rectangle{
             if(obj.update) obj.update(time);
         });
     }
-    
-    moveleft(){
-        if(this.dir == DIRECTION.LEFT){
-            this.destination.move(DIRECTION.LEFT,this.width);
+    move(dir){
+        if(this.dir == dir){
+            this.destination.move(dir,this.width);
             this.collisionNormalizer();
         }
-        this.dir = DIRECTION.LEFT;
+        this.dir = dir;
+    }
+    moveleft(){
+        this.move(DIRECTION.LEFT);
     }
     moveright(){
-        if(this.dir == DIRECTION.RIGHT){
-            this.destination.move(DIRECTION.RIGHT,this.width);
-            this.collisionNormalizer();
-        }
-        this.dir = DIRECTION.RIGHT;
+        this.move(DIRECTION.RIGHT);
     }
     moveup(){
-        if(this.dir == DIRECTION.UP){
-            this.destination.move(DIRECTION.UP,this.width);
-            this.collisionNormalizer();
-        }
-        this.dir = DIRECTION.UP;
+        this.move(DIRECTION.UP);
     }
     movedown(){
-        if(this.dir == DIRECTION.DOWN){
-            this.destination.move(DIRECTION.DOWN,this.width);
-            this.collisionNormalizer();
-        }
-        this.dir = DIRECTION.DOWN;
+        this.move(DIRECTION.DOWN);
     }
-    collisionNormalizer(){
-        /*if(this.destination.y >= GLOBAL.CANVAS_HEIGHT - this.width){
-            this.destination.y = GLOBAL.CANVAS_HEIGHT - this.width;
-        }
-        if(this.destination.y >= GLOBAL.CANVAS_HEIGHT - this.width){
-            this.destination.y = GLOBAL.CANVAS_HEIGHT - this.width;
-        }
-        if(this.destination.y >= GLOBAL.CANVAS_HEIGHT - this.width){
-            this.destination.y = GLOBAL.CANVAS_HEIGHT - this.width;
-        }
-        if(this.destination.y >= GLOBAL.CANVAS_HEIGHT - this.width){
-            this.destination.y = GLOBAL.CANVAS_HEIGHT - this.width;
-        }
-        if(this.destination.x >= GLOBAL.CANVAS_WIDTH - this.width){
-            this.destination.x = GLOBAL.CANVAS_WIDTH - this.width;
-        }
-        if(this.destination.x >= GLOBAL.CANVAS_WIDTH - this.width){
-            this.destination.x = GLOBAL.CANVAS_WIDTH - this.width;
-        }
-        if(this.destination.x <= this.width){
-            this.destination.x = this.width;
-        }
-        if(this.destination.x >= GLOBAL.CANVAS_WIDTH - this.width){
-            this.destination.x = GLOBAL.CANVAS_WIDTH - this.width;
-        }*/
-    }
-
     fire(){
         this.shotsCount--;
         if(this.shots.length > 3) return;

@@ -112,7 +112,7 @@ export default class GameScene{
         mob.setPosition(new Point(randx,randy));
         this.mobs.push(mob);
     }
-    isPaused(){
+    isPaused(){ 
         return this.sceneManager._main.Timer.isPaused;
     }
 	keydown(key){

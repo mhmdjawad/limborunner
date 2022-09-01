@@ -1,8 +1,8 @@
 import Point from "../module/Point.js";
-import Rectangle from '../module/Rectangle.js';
+import Mob from '../mob/mob.js';
 import Rock from './rock.js';
 
-export default class Monster extends Rectangle{
+export default class Monster extends Mob{
     constructor(gamescene){
         super();
         this.life = 3;

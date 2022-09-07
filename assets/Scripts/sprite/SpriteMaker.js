@@ -123,7 +123,8 @@ export default class SpriteMaker{
         canvas2.width = blueprint.width * width;
         canvas2.height = blueprint.height * height;
         let ctx2 = canvas2.getContext('2d');
-        let ofx = 0, ofy = -height;
+        // console.log(`${blueprint.height} ${height}`)
+        let ofx = 0, ofy = Math.min(-height,blueprint.height);
         for(let i = 0; i < blueprint.height; i++){
             ofx = -width;
             ofy += height;

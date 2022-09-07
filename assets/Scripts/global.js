@@ -63,13 +63,13 @@ function rotateCW(image,times,passed = 0){
 }
 const DIRECTION = {
     UP              : Symbol("UP"),             //Rotation 0
-    UPRIGHT         : Symbol("UPRIGHT"),        //Rotation 1
+    // UPRIGHT         : Symbol("UPRIGHT"),        //Rotation 1
     RIGHT           : Symbol("RIGHT"),          //Rotation 2
-    DOWNRIGHT       : Symbol("DOWNRIGHT"),      //Rotation 3
+    // DOWNRIGHT       : Symbol("DOWNRIGHT"),      //Rotation 3
     DOWN            : Symbol("DOWN"),           //Rotation 4
-    DOWNLEFT        : Symbol("DOWNLEFT"),       //Rotation 5
+    // DOWNLEFT        : Symbol("DOWNLEFT"),       //Rotation 5
     LEFT            : Symbol("LEFT"),           //Rotation 6       
-    UPLEFT          : Symbol("UPLEFT"),         //Rotation 7
+    // UPLEFT          : Symbol("UPLEFT"),         //Rotation 7
 }
 function getDirection(rotation){
     rotation = rotation % 7;

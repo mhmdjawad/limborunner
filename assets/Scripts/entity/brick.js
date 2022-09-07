@@ -1,7 +1,10 @@
+import Point from "../module/Point.js";
+
 export default class Brick{
     constructor(game,location = null){
         this.game = game;
         this.sprite = Brick.getSprite(4);
+        this.life = 1;
         if(location == null){
             let w = window.game.canvas.width / this.sprite.width;
             let h = window.game.canvas.height / this.sprite.height;
@@ -12,6 +15,7 @@ export default class Brick{
             this.x = location.x ;
             this.y = location.y;
         }
+        this.center = new Point(this.x,this.y);
     }
     draw(ctx){
         ctx.drawImage(this.sprite,

@@ -2,21 +2,22 @@ import Point from "../module/Point.js";
 import Mob from '../mob/mob.js';
 import Rock from './rock.js';
 import Brick from "./brick.js";
-export default class Player extends Mob{
+export default class Zombie extends Mob{
     constructor(game){
         super(game);
-        this.life = 100;
+        this.life = 3;
         this.level = 1;
-        this.ammo = 100;
         this.center = this.destination = this.latestDestination = new Point(0,0);
         this.shots = [];
-        this.playersprite = this.getSprite();
-        this.width = this.playersprite.width;
-        this.height = this.playersprite.height;
+        this.sprite = this.getSprite();
+        this.width = this.sprite.width;
+        this.height = this.sprite.height;
         this.dir = DIRECTION.UP;
+        this.speed = 20;
+        this.cooldownact = this.speed;
     }
     getSprite(){
-        let sprite = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['hero1.gif']);
+        let sprite = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['zombie.gif']);
         sprite = SpriteMaker.magnify(sprite,2);
         sprite = SpriteMaker.transformCanvasColors(sprite,{"#ffffff":"_"});
         return sprite;
@@ -25,7 +26,7 @@ export default class Player extends Mob{
         this.center = this.destination = this.latestDestination = point;
     }
     draw(ctx){
-        ctx.drawImage(this.playersprite,
+        ctx.drawImage(this.sprite,
             this.center.x - this.width/2, 
             this.center.y - this.height/2);
         [...this.shots].forEach(obj=>{
@@ -48,29 +49,27 @@ export default class Player extends Mob{
         [...this.shots].forEach(obj=>{
             if(obj.update) obj.update(time);
         });
+        this.cooldownact--;
+        if(this.cooldownact <= 0){
+            this.cooldownact = this.speed;
+            if(rand() > 0.85) this.fire();
+            if(rand() > 0.95) this.placewall();
+            let pm = this.getPossibleMoves();
+            if(pm.length > 0){
+                this.dir = pm[randInt(0,pm.length)];
+                this.move(this.dir);
+            }
+        }
     }
     fire(){
         // this.shotsCount--;
-        if(this.ammo <= 0) {
-            if(this.game.score <= 0) return;
-            this.ammo = 50;
-            this.game.score--;
-        }
         // if(this.shots.length > 3) return;
         new Rock(this);
-        this.ammo--;
-    }
-    buyammo(){
-        if(this.game.score <= 0) return;
-        this.ammo += 50;
-        this.game.score--;
     }
     placewall(){
-        if(this.game.score <= 0) return;
         let to = this.center.clone();
         to.move(this.dir,this.width);
         this.game.Objects.push(new Brick(this.game,to));
-        this.game.score--;
     }
     possibleMoves(){
         let c = this.center;

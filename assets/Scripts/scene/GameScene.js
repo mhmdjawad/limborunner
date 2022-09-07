@@ -1,11 +1,11 @@
-import KeyboardAndMouse     from '../handler/KeyboardAndMouse.js'
+import KeyboardAndMouse     from '../handler/KeyboardAndMouse.js';
 import Player               from '../entity/player.js';
-import Monster              from '../entity/monster.js';
+// import Monster              from '../entity/monster.js';
 import Point                from '../module/Point.js';
 import PixelFont            from '../handler/PixelFont.js';
 import SpriteMaker          from '../sprite/SpriteMaker.js';
 import Brick                from '../entity/brick.js';
-import Rectangle from '../module/Rectangle.js';
+import Zombie               from '../entity/zombie.js';
 
 export default class GameScene{
     constructor(sceneManager){
@@ -18,39 +18,31 @@ export default class GameScene{
 			KeyboardAndMouse.Event.KEYDOWN
 		]);
         this.FontHandler = new PixelFont(16,'#ffffff');
-        this.level = 1;
         this.player = new Player(this);
+        this.score = 0;
         this.mobs = [];
         this.player.setPosition(new Point(16,GLOBAL.CANVAS_HEIGHT-16));
         this.Objects = [];
-        this.map = this.makeMapBg();
-        for(let i = 0 ; i < 10 ; i++){
+        this.mapoverlay = this.makeMapBg();
+        for(let i = 0 ; i < randInt(10,30) ; i++){
             this.Objects.push(new Brick(this));
         }
     }
-
     makeMapBg(){
-
         let grass = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['grass.gif']);
         let dirt = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['dirt.gif']);
         grass = SpriteMaker.magnify(grass,4);
         dirt = SpriteMaker.magnify(dirt,4);
         let map1 = document.createElement('canvas');
-        map1.length = map1.width = 40;
+        map1.height = 20; map1.width = 20;
         let map1c = map1.getContext('2d');
         map1c.fillStyle = "#000";
-        map1c.fillRect(0,0,40,40);
+        map1c.fillRect(0,0,map1.width,map1.height);
         this.mapoverlay = SpriteMaker.pxielToCanvas( map1,{
-            // "#fbf236" : '_',
-            // "#99e550" : grass,
-            // "#5b6ee1" : water,
-            // "#847e87" : stone,
-            // "#8f563b" : [stone,dirt],
-            // "#ffffff" : [grass,stone,dirt,water],
-            // "#000" : [grass,stone,dirt,water]
             "#000" : [grass,dirt]
         },grass.width,grass.height);
-        return map1;
+        // document.body.append(this.mapoverlay);
+        return this.mapoverlay;
     }
     gameplayField(ctx){
         ctx.globalAlpha = 0.3;
@@ -66,6 +58,23 @@ export default class GameScene{
         this.player.update(time);
         [...this.mobs].forEach(obj=>{
             if(obj.update) obj.update(time);
+            if(obj.shots){
+                obj.shots.forEach(x => {
+                    [...this.mobs].forEach(obj=>{
+                        if(x.distanceTo(this.player.center) <= 32){
+                            this.player.life -= x.life;
+                            x.life = 0;
+                        }
+                    });
+                    [...this.Objects].forEach(obj=>{
+                        if(x.distanceTo(obj.center) <= 32){
+                            obj.life -= x.life;
+                            x.life = 0;
+                        }
+                    });
+                });
+            }
+            
         });
         this.player.shots.forEach(x => {
             [...this.mobs].forEach(obj=>{
@@ -74,10 +83,23 @@ export default class GameScene{
                     x.life = 0;
                 }
             });
+            [...this.Objects].forEach(obj=>{
+                if(x.distanceTo(obj.center) <= 32){
+                    obj.life -= x.life;
+                    x.life = 0;
+                }
+            });
         });
-        this.mobs = this.mobs.filter(s => s.life > 0);
-        if(this.mobs < 40 && time % 10 == 0){
+        let remaining = this.mobs.filter(s => s.life > 0);
+        this.score += this.mobs.length - remaining.length;
+        this.mobs = remaining;
+        this.Objects = this.Objects.filter(s => s.life > 0);
+        if(this.mobs.length < 10 && rand() > 0.4 ){
             this.addMob();
+        }
+        if(this.player.life <= 0){
+            alert('game over final score is ' + this.score);
+            this.sceneManager.toMainMenuScene();
         }
     }
     newgame(){
@@ -86,6 +108,10 @@ export default class GameScene{
     notify(e){
 		if(e.name == KeyboardAndMouse.Event.KEYDOWN || e.name == KeyboardAndMouse.Event.KEYPRESS){
 			this.keydown(e.event);
+            if(!e.event.ctrlKey){
+                e.event.preventDefault();
+                e.event.stopPropagation();
+            }
 		}
 		else{
 			//console.log(e);
@@ -103,12 +129,16 @@ export default class GameScene{
 			if(obj.draw) obj.draw(ctx);
 		});
         this.player.draw(ctx);
-        // this.FontHandlerW.print("ROCKS " + this.player.shotsCount, ctx, 0, GLOBAL.CANVAS_HEIGHT/2 + 32, false);
+        this.FontHandler.printLines([
+			'LIFE ' + this.player.life,
+            'AMMO ' + this.player.ammo,
+            'SCORE ' + this.score,
+		],ctx,5,80,false);
 	}
     addMob(){
-        let mob = new Monster(this);
-        let randx = randInt(GLOBAL.TILESIZE * 3 , GLOBAL.CANVAS_WIDTH - GLOBAL.TILESIZE  * 3);
-        let randy = randInt(GLOBAL.TILESIZE * 3 , GLOBAL.CANVAS_HEIGHT - GLOBAL.TILESIZE  * 6);
+        let mob = new Zombie(this);
+        let randx = 16 + 32 * randInt(0, game.canvas.width / 32 );
+        let randy = 16 + 32 * randInt(0, game.canvas.height / 32 );
         mob.setPosition(new Point(randx,randy));
         this.mobs.push(mob);
     }

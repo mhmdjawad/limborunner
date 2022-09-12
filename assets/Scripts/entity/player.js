@@ -42,8 +42,8 @@ export default class Player extends Mob{
     }
     update(time){
         this.shots = this.shots.filter(s => 
-            s.y >= 0 && s.y <= GLOBAL.CANVAS_HEIGHT && 
-            s.x >= 0 && s.x <= GLOBAL.CANVAS_WIDTH && 
+            s.y >= 0 && s.y <= this.game.mapoverlay.height && 
+            s.x >= 0 && s.x <= this.game.mapoverlay.width && 
             s.life > 0);
         [...this.shots].forEach(obj=>{
             if(obj.update) obj.update(time);

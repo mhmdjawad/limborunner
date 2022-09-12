@@ -68,7 +68,6 @@ KeyboardAndMouse.Event = {
 
     CLICK   : 'click',
 
-
     TOUCHORCLICK : ['click','touchstart'],
     TOUCH : ['click','touchstart','touchend','touchcancel','touchmove'],
     KEY : ['keydown','keyup','keypress'],

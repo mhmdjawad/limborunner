@@ -3,7 +3,6 @@ export default class Point{
         this.x = x;
         this.y = y;
     }
-
     is(another){
         let x1 = this.x;
         let y1 = this.y;
@@ -97,5 +96,3 @@ export default class Point{
 			//ctx.stroke();
     }
 }
-
-window.Point = Point;

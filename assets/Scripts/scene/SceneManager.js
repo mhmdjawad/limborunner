@@ -2,6 +2,7 @@
 import LoadingScene 	from './LoadingScene.js';
 import MainMenuScene 	from './MainMenuScene.js';
 import GameScene 	from './GameScene.js';
+import Loaderboard 	from './Leaderboard.js';
 
 export default class SceneManager{
     constructor(eventManager,main) {
@@ -37,5 +38,9 @@ export default class SceneManager{
 	toGame() {
 		this.eventManager.removeAllSubscribers();
 		this.scene = new GameScene(this);
+	}
+	toLeaderboard() {
+		this.eventManager.removeAllSubscribers();
+		this.scene = new Loaderboard(this);
 	}
 }

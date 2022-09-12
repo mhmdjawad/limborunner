@@ -13,13 +13,17 @@ export default class Zombie extends Mob{
         this.width = this.sprite.width;
         this.height = this.sprite.height;
         this.dir = DIRECTION.UP;
-        this.speed = 20;
+        this.speed = 50;
         this.cooldownact = this.speed;
+        this.canAttack = true;
     }
     getSprite(){
         let sprite = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['zombie.gif']);
         sprite = SpriteMaker.magnify(sprite,2);
         sprite = SpriteMaker.transformCanvasColors(sprite,{"#ffffff":"_"});
+        if(this.canAttack == false){
+            sprite = SpriteMaker.transformCanvasColors(sprite,{"#6abe30":"#6a6230"});
+        }
         return sprite;
     }
     setPosition(point){
@@ -32,19 +36,19 @@ export default class Zombie extends Mob{
         [...this.shots].forEach(obj=>{
             if(obj.draw) obj.draw(ctx);
         });
-        let to = this.center.clone();
+        /*let to = this.center.clone();
         to.move(this.dir,this.width);
         ctx.fillStyle = "#4b58b57a";
         ctx.fillRect(
             to.x - this.width/2, 
             to.y - this.height/2,
             this.width,
-            this.height);
+            this.height);*/
     }
     update(time){
         this.shots = this.shots.filter(s => 
-            s.y >= 0 && s.y <= GLOBAL.CANVAS_HEIGHT && 
-            s.x >= 0 && s.x <= GLOBAL.CANVAS_WIDTH && 
+            s.y >= 0 && s.y <= this.game.mapoverlay.height && 
+            s.x >= 0 && s.x <= this.game.mapoverlay.width && 
             s.life > 0);
         [...this.shots].forEach(obj=>{
             if(obj.update) obj.update(time);
@@ -62,16 +66,12 @@ export default class Zombie extends Mob{
         }
     }
     fire(){
-        // this.shotsCount--;
-        // if(this.shots.length > 3) return;
-        new Rock(this);
+        if(this.canAttack)
+            new Rock(this);
     }
     placewall(){
         let to = this.center.clone();
         to.move(this.dir,this.width);
         this.game.Objects.push(new Brick(this.game,to));
-    }
-    possibleMoves(){
-        let c = this.center;
     }
 }

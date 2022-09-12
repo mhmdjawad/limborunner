@@ -31,6 +31,9 @@ export default class MainMenuScene{
 		this.menuItems = [
 			new MenuItem(this,"New Game"		, menuXY.x, menuXY.y + menuXY.h * menuXY.r++, function(){
 				self.sceneManager.toGame();
+			}),
+			new MenuItem(this,"LEADERBOARD"		, menuXY.x, menuXY.y + menuXY.h * menuXY.r++, function(){
+				self.sceneManager.toLeaderboard();
 			})
 		];
 		this.menuItemSelected = 0;
@@ -148,14 +151,14 @@ export default class MainMenuScene{
 		});
 	}
 	drawIntroImage(context){
-		this.FontHandlerRed.printLines([
+		/*this.FontHandlerRed.printLines([
 			'LIMBO RUNNER',
 			'GAME'
 		],context,0,80,true);
 		this.FontHandlerGreen.printLines([
 			'LIMBO RUNNER',
 			'GAME'
-		],context,1,82,true);
+		],context,1,82,true);*/
 		this.FontHandlerBlue.printLines([
 			'LIMBO RUNNER',
 			'GAME'

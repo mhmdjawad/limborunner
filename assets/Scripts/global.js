@@ -1,45 +1,37 @@
-let GLOBAL = {};
-GLOBAL.ASPECT_MULTIPLIER            = 1;//default multiplier to resize stuff in canvas
-GLOBAL.TILESIZE = 16 * GLOBAL.ASPECT_MULTIPLIER;
-GLOBAL.PROJECT_IMAGES               = "assets/Images/";
-GLOBAL.FRAMERATE                    = 1/15;    // frames per second
-GLOBAL.CANVAS = {
-    CONTAINER : ".canvas_container",
-    WIDTH   : GLOBAL.TILESIZE * 40, //parseInt(window.innerWidth / 200) * 100,
-    HEIGHT  : GLOBAL.TILESIZE * 34  //parseInt(window.innerHeight / 100) * 100 
-}
-GLOBAL.CANVAS_WIDTH = GLOBAL.CANVAS.WIDTH;
-GLOBAL.CANVAS_HEIGHT = GLOBAL.CANVAS.HEIGHT;
-//FONTS
-GLOBAL.CHARS = ' 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ.:-';
-GLOBAL.MAPS = {};
-GLOBAL.SOUNDS = {};
-GLOBAL.IMAGES = {};
-//Assets To Load
-GLOBAL.Assets = {
-    "loaded" : 0,
-    "images_url" : [
-        'player1.gif',
-        'black-font-8.gif',
-        'grass.gif',
-        'stone.gif',
-        'water.gif',
-        'dirt.gif',
-        'zombie.gif',
-        'slime.gif',
-        'hero1.gif',
-        'bricks.gif',
-    ],
-    "json_url" : [],
-    "sounds_url" : [],
-    "images"    :{},
-    "json"      :{},
-    "sounds"    :{}
-}
-GLOBAL.Assets.count = 
-    GLOBAL.Assets.images_url.length + 
-    GLOBAL.Assets.json_url.length + 
-    GLOBAL.Assets.sounds_url.length;
+let GLOBAL = {
+    ASPECT_MULTIPLIER : 1,
+    TILESIZE : 16,
+    PROJECT_IMAGES : "assets/Images/",
+    FRAMERATE : 1/15,
+    CANVAS : {
+        CONTAINER : ".canvas_container",
+        WIDTH   : 16 * 40, 
+        HEIGHT  : 16 * 34
+    },
+    CANVAS_WIDTH : 16 * 40,
+    CANVAS_HEIGHT : 16 * 34,
+    CHARS : ' 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ.:-',
+    MAPS : {},
+    SOUNDS : {},
+    IMAGES : {},
+    Assets : {
+        "loaded" : 0,
+        "images_url" : [
+            'black-font-8.gif',
+            'grass.gif',
+            'dirt.gif',
+            'zombie.gif',
+            'hero1.gif',
+            'bricks.gif',
+        ],
+        "json_url" : [],
+        "sounds_url" : [],
+        "images"    :{},
+        "json"      :{},
+        "sounds"    :{},
+        "count":6
+    },
+};
 function rotateCW(image,times,passed = 0){
     let buffer = document.createElement('canvas');
     buffer.width = this.entityManager.size;

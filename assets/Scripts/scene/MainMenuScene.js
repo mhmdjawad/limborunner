@@ -2,7 +2,6 @@ import KeyboardAndMouse     from '../handler/KeyboardAndMouse.js'
 import MenuItem             from '../module/MenuItem.js';
 import PixelFont 			from '../handler/PixelFont.js';
 import SpriteMaker 			from '../sprite/SpriteMaker.js';
-import {Paint} 				from '../lib/Helpers.js';
 export default class MainMenuScene{
 	constructor(sceneManager){
 		window.scene = this;
@@ -22,15 +21,18 @@ export default class MainMenuScene{
 		this.FontHandlerBlue = new PixelFont(8*4,'#0000ff');
 		this.FontHandlerWhite = new PixelFont(8*4,'#ffffff');
 		let menuXY = {
-			x : GLOBAL.TILESIZE * 5,
-			y : GLOBAL.TILESIZE * 15,
-			h : this.FontHandler.size + GLOBAL.TILESIZE,
+			x : 16 * 5,
+			y : 16 * 15,
+			h : this.FontHandler.size + 16,
 			r : 0
         };
         let self = this;
 		this.menuItems = [
 			new MenuItem(this,"New Game"		, menuXY.x, menuXY.y + menuXY.h * menuXY.r++, function(){
 				self.sceneManager.toGame();
+			}),
+			new MenuItem(this,"INSTRUCTIONS"		, menuXY.x, menuXY.y + menuXY.h * menuXY.r++, function(){
+				self.sceneManager.toInstructions();
 			}),
 			new MenuItem(this,"LEADERBOARD"		, menuXY.x, menuXY.y + menuXY.h * menuXY.r++, function(){
 				self.sceneManager.toLeaderboard();
@@ -133,7 +135,7 @@ export default class MainMenuScene{
 			let x = GLOBAL.CANVAS_WIDTH - img.width;
             context.drawImage(img,
                 x,
-                GLOBAL.CANVAS_HEIGHT - img.height - GLOBAL.TILESIZE*6,
+                GLOBAL.CANVAS_HEIGHT - img.height - 16*6,
                 img.width,
                 img.height
             );
@@ -151,15 +153,7 @@ export default class MainMenuScene{
 		});
 	}
 	drawIntroImage(context){
-		/*this.FontHandlerRed.printLines([
-			'LIMBO RUNNER',
-			'GAME'
-		],context,0,80,true);
-		this.FontHandlerGreen.printLines([
-			'LIMBO RUNNER',
-			'GAME'
-		],context,1,82,true);*/
-		this.FontHandlerBlue.printLines([
+		this.FontHandlerRed.printLines([
 			'LIMBO RUNNER',
 			'GAME'
 		],context,2,86,true);
@@ -170,46 +164,41 @@ export default class MainMenuScene{
 	}
 	drawIntroGameLogo(context){
 		let L = this.FontHandler.chars['L'];
-		let P01 = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['grass.gif']);
-		let P02 = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['stone.gif']);
-		
 		let grass = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['grass.gif']);
-		let stone = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['stone.gif']);
 		let dirt = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['dirt.gif']);
-		let water = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['water.gif']);
 		let image;
-		image = SpriteMaker.pxielToCanvas( this.FontHandler.chars['L'],{"#ffffff" : [grass,stone,dirt,water]},8,8);
+		image = SpriteMaker.pxielToCanvas( this.FontHandler.chars['L'],{"#ffffff" : [grass,dirt]},8,8);
 		context.drawImage(image,
-			GLOBAL.TILESIZE,
-			GLOBAL.CANVAS_HEIGHT - image.height - GLOBAL.TILESIZE*6,
+			16,
+			GLOBAL.CANVAS_HEIGHT - image.height - 16*6,
 			image.width,
 			image.height
 		);
-		image = SpriteMaker.pxielToCanvas( this.FontHandler.chars['I'],{"#ffffff" : [grass,stone,dirt,water]},8,8);
+		image = SpriteMaker.pxielToCanvas( this.FontHandler.chars['I'],{"#ffffff" : [grass,dirt]},8,8);
 		context.drawImage(image,
 			image.width,
-			GLOBAL.CANVAS_HEIGHT - image.height - GLOBAL.TILESIZE*6,
+			GLOBAL.CANVAS_HEIGHT - image.height - 16*6,
 			image.width,
 			image.height
 		);
-		image = SpriteMaker.pxielToCanvas( this.FontHandler.chars['M'],{"#ffffff" : [grass,stone,dirt,water]},8,8);
+		image = SpriteMaker.pxielToCanvas( this.FontHandler.chars['M'],{"#ffffff" : [grass,dirt]},8,8);
 		context.drawImage(image,
 			image.width*2,
-			GLOBAL.CANVAS_HEIGHT - image.height - GLOBAL.TILESIZE*6,
+			GLOBAL.CANVAS_HEIGHT - image.height - 16*6,
 			image.width,
 			image.height
 		);
-		image = SpriteMaker.pxielToCanvas( this.FontHandler.chars['B'],{"#ffffff" : [grass,stone,dirt,water]},8,8);
+		image = SpriteMaker.pxielToCanvas( this.FontHandler.chars['B'],{"#ffffff" : [grass,dirt]},8,8);
 		context.drawImage(image,
 			image.width*3,
-			GLOBAL.CANVAS_HEIGHT - image.height - GLOBAL.TILESIZE*6,
+			GLOBAL.CANVAS_HEIGHT - image.height - 16*6,
 			image.width,
 			image.height
 		);
-		image = SpriteMaker.pxielToCanvas( this.FontHandler.chars['O'],{"#ffffff" : [grass,stone,dirt,water]},8,8);
+		image = SpriteMaker.pxielToCanvas( this.FontHandler.chars['O'],{"#ffffff" : [grass,dirt]},8,8);
 		context.drawImage(image,
 			image.width*4,
-			GLOBAL.CANVAS_HEIGHT - image.height - GLOBAL.TILESIZE*6,
+			GLOBAL.CANVAS_HEIGHT - image.height - 16*6,
 			image.width,
 			image.height
 		);

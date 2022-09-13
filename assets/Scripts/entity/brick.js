@@ -4,7 +4,7 @@ export default class Brick{
     constructor(game,location = null){
         this.game = game;
         this.sprite = Brick.getSprite(4);
-        this.life = 1;
+        this.life = 6 + game.stage * 2;
         if(location == null){
             let w = this.game.mapoverlay.width / this.sprite.width;
             let h = this.game.mapoverlay.height / this.sprite.height;

@@ -34,6 +34,7 @@ export default class Leaderboard{
         }
 	}
     getLeaderBoardList(){
+        if(GLOBAL.Leaderboard) return GLOBAL.Leaderboard;
         let list = [
             {
                 'name' : 'PL1',
@@ -44,6 +45,7 @@ export default class Leaderboard{
                 'score' : '900'
             }
         ];
+        GLOBAL.Leaderboard = list;
         return list;
     }
 }

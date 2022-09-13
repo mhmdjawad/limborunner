@@ -34,12 +34,14 @@ export default class Instructions{
         }
 
         this.FontHandler.printLines([
-			'YOU NEED TO SPRINT',
-            'IN THE LIMBO WORLD',
-            'WHERE DEAD ARE ALIVE',
+			'SPRINT THROUGH LIMBO',
+            'THE RELAM OF THE DEAD',
+            'SURVIVE TO REACH OTHER SIDE',
             'TILL YOU REACH HOME',
+            '',
+            '',
             'GOOD LUCK',
-		],ctx,150,ofy+50,false);
+		],ctx,0,ofy+50,true);
 	}
     getLeaderBoardList(){
         let list = [
@@ -49,15 +51,19 @@ export default class Instructions{
             },
             {
                 'name'  : 'SPACE ',
-                'def'   : 'FIRE WEPON'
+                'def'   : 'FIRE WEAPON'
             },
             {
                 'name'  : 'B     ',
                 'def'   : 'BUILD WALL'
             },
             {
-                'name'  : 'R     ',
-                'def'   : 'BUY AMMO'
+                'name'  : 'ESC   ',
+                'def'   : 'MAIN SCREEN'
+            },
+            {
+                'name'  : 'ENTER ',
+                'def'   : 'PAUSE GAME'
             }
         ];
         return list;

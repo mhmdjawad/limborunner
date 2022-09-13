@@ -4,7 +4,7 @@ import Point                from '../module/Point.js';
 import PixelFont            from '../handler/PixelFont.js';
 import SpriteMaker          from '../sprite/SpriteMaker.js';
 import Zombie               from '../entity/zombie.js';
-import Brick               from '../entity/Brick.js';
+import Brick               from '../entity/brick.js';
 export default class GameScene{
     constructor(sceneManager){
         window.scene = this;
@@ -83,6 +83,13 @@ export default class GameScene{
         this.Objects = this.Objects.filter(s => s.life > 0);
         if(this.player.life <= 0){
             alert('game over final score is ' + this.score);
+            let name = prompt("enter name for score board","player");
+            GLOBAL.Leaderboard.push(
+                {
+                    'name' : name,
+                    'score' : this.score
+                }
+            );
             this.sceneManager.toMainMenuScene();
         }
         if(this.player.center.y <= 16){
@@ -189,8 +196,7 @@ export default class GameScene{
         this.mobs.push(mob);
     }
     addBuilderMob(){
-        let mob = new Zombie(this);
-        mob.canAttack = false;
+        let mob = new Zombie(this, true);
         let randx = 16 + 32 * randInt(0, this.mapoverlay.width / 32 );
         let randy = 16 + 32 * randInt(0, this.mapoverlay.height / 32 );
         mob.setPosition(new Point(randx,randy));

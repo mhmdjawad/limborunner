@@ -3,19 +3,26 @@ import Mob from '../mob/mob.js';
 import Rock from './rock.js';
 import Brick from "./brick.js";
 export default class Zombie extends Mob{
-    constructor(game){
+    constructor(game, passive = false){
         super(game);
         this.life = 3;
         this.level = 1;
         this.center = this.destination = this.latestDestination = new Point(0,0);
         this.shots = [];
+        this.canAttack = !passive;
         this.sprite = this.getSprite();
         this.width = this.sprite.width;
         this.height = this.sprite.height;
         this.dir = DIRECTION.UP;
         this.speed = 50;
+        if(passive){
+            this.speed = 10;
+        }
+        this.speed -= this.game.stage;
+        if(this.speed < 10){
+            this.speed = 10;
+        }
         this.cooldownact = this.speed;
-        this.canAttack = true;
     }
     getSprite(){
         let sprite = SpriteMaker.imageToCanvas(GLOBAL.Assets.images['zombie.gif']);
@@ -57,7 +64,7 @@ export default class Zombie extends Mob{
         if(this.cooldownact <= 0){
             this.cooldownact = this.speed;
             if(rand() > 0.85) this.fire();
-            if(rand() > 0.95) this.placewall();
+            if(rand() > 0.95 || (!this.canAttack && rand() > 0.3)) this.placewall();
             let pm = this.getPossibleMoves();
             if(pm.length > 0){
                 this.dir = pm[randInt(0,pm.length)];

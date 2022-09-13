@@ -3,13 +3,9 @@ let GLOBAL = {
     TILESIZE : 16,
     PROJECT_IMAGES : "assets/Images/",
     FRAMERATE : 1/15,
-    CANVAS : {
-        CONTAINER : ".canvas_container",
-        WIDTH   : 16 * 40, 
-        HEIGHT  : 16 * 34
-    },
-    CANVAS_WIDTH : 16 * 40,
-    CANVAS_HEIGHT : 16 * 34,
+    CANVAS_CONTAINER : ".canvas_container",
+    CANVAS_WIDTH   : 16 * 40, 
+    CANVAS_HEIGHT  : 16 * 34,
     CHARS : ' 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ.:-',
     MAPS : {},
     SOUNDS : {},

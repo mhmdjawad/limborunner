@@ -4,13 +4,13 @@ import EventManager from "./EventManager.js";
 import KeyboardAndMouse from "../handler/KeyboardAndMouse.js";
 import AssetsManager from './AssetsManager.js';
 export default class GameBase{
-    constructor(canvas){
-        const canvas_container = document.querySelector(canvas.CONTAINER);
+    constructor(){
+        const canvas_container = document.querySelector(GLOBAL.CANVAS_CONTAINER);
         canvas_container.innerHTML = "";
         this.canvas = document.createElement('canvas');
         canvas_container.appendChild(this.canvas);
-        this.canvas.width = canvas.WIDTH;
-        this.canvas.height = canvas.HEIGHT;
+        this.canvas.width = GLOBAL.CANVAS_WIDTH;
+        this.canvas.height = GLOBAL.CANVAS_HEIGHT;
         this.ctx = this.canvas.getContext('2d');
         this.Timer = new Timer(GLOBAL.FRAMERATE, this, false);
         this.framesPassedTillNow = 0;

@@ -61,9 +61,9 @@ export default class Mob{
         let newdest = this.destination.clone();
         newdest.move(dir,this.width);
         if(newdest.x <=0 ) return false;
-        if(newdest.x > game.canvas.width ) return false;
-        if(newdest.y > game.canvas.height ) return false;
         if(newdest.y <= 0) return false;
+        if(newdest.x > this.game.mapoverlay.width ) return false;
+        if(newdest.y > this.game.mapoverlay.height ) return false;
         let obstacle = this.game.Objects.find(o => o.x == newdest.x && o.y == newdest.y);
         return obstacle == undefined;
     }
